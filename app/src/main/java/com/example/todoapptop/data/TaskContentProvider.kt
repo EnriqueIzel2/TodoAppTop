@@ -2,12 +2,29 @@ package com.example.todoapptop.data
 
 import android.content.ContentProvider
 import android.content.ContentValues
+import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
 
 class TaskContentProvider : ContentProvider() {
 
   private lateinit var taskDBHelper: TaskDBHelper
+
+  companion object {
+    const val TASKS = 100
+    const val TASK_WITH_ID = 101
+  }
+
+  private val sUriMatcher: UriMatcher = buildUriMatcher()
+
+  private fun buildUriMatcher(): UriMatcher {
+    val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
+
+    uriMatcher.addURI(TaskContract.AUTHORITY, TaskContract.PATH_TASKS, TASKS)
+    uriMatcher.addURI(TaskContract.AUTHORITY, "${TaskContract.PATH_TASKS}/#", TASK_WITH_ID)
+
+    return uriMatcher
+  }
 
   override fun onCreate(): Boolean {
     context?.let {

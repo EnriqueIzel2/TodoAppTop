@@ -1,5 +1,6 @@
 package com.example.todoapptop
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,5 +22,10 @@ class MainActivity : AppCompatActivity() {
     recyclerView.layoutManager = LinearLayoutManager(this)
     val customCursorAdapter = CustomCursorAdapter()
     recyclerView.adapter = customCursorAdapter
+
+    floatingActionButton.setOnClickListener {
+      val intent = Intent(this, AddTaskActivity::class.java)
+      startActivity(intent)
+    }
   }
 }

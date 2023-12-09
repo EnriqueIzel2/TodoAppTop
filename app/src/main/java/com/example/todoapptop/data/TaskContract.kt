@@ -5,9 +5,9 @@ import android.net.Uri
 class TaskContract {
 
   companion object {
-    private const val AUTHORITY = "com.example.todoapptop"
+    const val AUTHORITY = "com.example.todoapptop"
     val BASE_CONTENT_URI: Uri = Uri.parse("content://$AUTHORITY")
-    private const val PATH_TASKS = "tasks"
+    const val PATH_TASKS = "tasks"
   }
 
   object TaskEntry {

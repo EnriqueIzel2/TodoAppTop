@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="button_add">Button Add</string>
+    <string name="addTask_taskDescription">Descrição da atividade</string>
+    <string name="radioButton_high_priority">Alta</string>
+    <string name="radio_buttom_medium_priority">Média</string>
+    <string name="radioButton_low_priority">Baixa</string>
+    <string name="button_add_task">Adicionar</string>
 </resources>

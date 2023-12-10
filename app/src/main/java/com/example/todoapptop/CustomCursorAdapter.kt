@@ -55,7 +55,7 @@ class CustomCursorAdapter : RecyclerView.Adapter<CustomCursorAdapter.TaskViewHol
 
   override fun getItemCount(): Int = cursor?.count ?: 0
 
-  private fun swapCursor(c: Cursor?): Cursor? {
+  fun swapCursor(c: Cursor?): Cursor? {
     if (cursor == c) {
       return null
     }

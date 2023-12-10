@@ -34,14 +34,17 @@ class CustomCursorAdapter : RecyclerView.Adapter<CustomCursorAdapter.TaskViewHol
   }
 
   override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+    val idIndex = cursor?.getColumnIndex("id") ?: 0
     val descriptionIndex = cursor?.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION) ?: 0
     val priorityIndex = cursor?.getColumnIndex(TaskContract.TaskEntry.COLUMN_PRIORITY) ?: 0
 
     cursor?.moveToPosition(position)
 
+    val id = cursor?.getInt(idIndex)
     val description = cursor?.getString(descriptionIndex)
     val priority = cursor?.getInt(priorityIndex) ?: 0
 
+    holder.itemView.tag = id
     holder.taskDescription.text = description
     holder.taskPriority.text = priority.toString()
 

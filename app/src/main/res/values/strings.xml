@@ -7,4 +7,5 @@
     <string name="radioButton_low_priority">Baixa</string>
     <string name="button_add_task">Adicionar</string>
     <string name="textView_priority_title">Prioridade</string>
+    <string name="toastMessage_create_success">Atividade criada com sucesso</string>
 </resources>

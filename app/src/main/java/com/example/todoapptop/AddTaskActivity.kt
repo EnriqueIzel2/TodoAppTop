@@ -1,12 +1,12 @@
 package com.example.todoapptop
 
 import android.content.ContentValues
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.todoapptop.data.TaskContract
 
 class AddTaskActivity : AppCompatActivity() {
@@ -32,7 +32,7 @@ class AddTaskActivity : AppCompatActivity() {
   }
 
   fun addTask(view: View) {
-    val description = findViewById<EditText>(R.id.textView_task_description).text.toString()
+    val description = findViewById<EditText>(R.id.editText_task_description).text.toString()
 
     if (description.isEmpty()) {
       return
@@ -47,7 +47,7 @@ class AddTaskActivity : AppCompatActivity() {
     uri?.let {
       Toast.makeText(
         this,
-        uri.toString(),
+        getString(R.string.toastMessage_create_success),
         Toast.LENGTH_SHORT
       ).show()
     }

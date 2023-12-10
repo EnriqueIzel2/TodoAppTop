@@ -6,4 +6,5 @@
     <string name="radio_buttom_medium_priority">Média</string>
     <string name="radioButton_low_priority">Baixa</string>
     <string name="button_add_task">Adicionar</string>
+    <string name="textView_priority_title">Prioridade</string>
 </resources>

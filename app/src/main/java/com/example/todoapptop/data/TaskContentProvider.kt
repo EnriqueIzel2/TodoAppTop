@@ -6,7 +6,7 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import java.lang.UnsupportedOperationException
+import kotlin.UnsupportedOperationException
 
 class TaskContentProvider : ContentProvider() {
 
@@ -37,13 +37,35 @@ class TaskContentProvider : ContentProvider() {
   }
 
   override fun query(
-    p0: Uri,
-    p1: Array<out String>?,
-    p2: String?,
-    p3: Array<out String>?,
-    p4: String?
+    uri: Uri,
+    projection: Array<out String>?,
+    selection: String?,
+    selectionArgs: Array<out String>?,
+    sortOrder: String?
   ): Cursor? {
-    TODO("Not yet implemented")
+    val db = taskDBHelper.readableDatabase
+    val match = sUriMatcher.match(uri)
+    val mCursor: Cursor?
+
+    when (match) {
+      TASKS -> {
+        mCursor = db.query(
+          TaskContract.TaskEntry.TABLE_NAME,
+          projection,
+          selection,
+          selectionArgs,
+          null,
+          null,
+          sortOrder
+        )
+      }
+
+      else -> throw UnsupportedOperationException("Unknown uri $uri")
+    }
+
+    mCursor?.setNotificationUri(context?.contentResolver, uri)
+
+    return mCursor
   }
 
   override fun getType(p0: Uri): String? {
@@ -53,23 +75,24 @@ class TaskContentProvider : ContentProvider() {
   override fun insert(uri: Uri, values: ContentValues?): Uri? {
     val db = taskDBHelper.writableDatabase
     val match = sUriMatcher.match(uri)
-    val returnUri: Uri?
+    val mUri: Uri?
 
-    when(match) {
+    when (match) {
       TASKS -> {
         val id = db.insert(TaskContract.TaskEntry.TABLE_NAME, null, values)
         if (id > 0) {
-          returnUri = ContentUris.withAppendedId(TaskContract.TaskEntry.CONTENT_URI, id)
+          mUri = ContentUris.withAppendedId(TaskContract.TaskEntry.CONTENT_URI, id)
         } else {
           throw android.database.SQLException("Failure to insert row $uri")
         }
       }
+
       else -> throw UnsupportedOperationException("Unknown uri $uri")
     }
 
     context?.contentResolver?.notifyChange(uri, null)
 
-    return returnUri
+    return mUri
   }
 
   override fun delete(p0: Uri, p1: String?, p2: Array<out String>?): Int {

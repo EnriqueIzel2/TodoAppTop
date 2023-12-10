@@ -95,8 +95,29 @@ class TaskContentProvider : ContentProvider() {
     return mUri
   }
 
-  override fun delete(p0: Uri, p1: String?, p2: Array<out String>?): Int {
-    TODO("Not yet implemented")
+  override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
+    val db = taskDBHelper.writableDatabase
+    val match = sUriMatcher.match(uri)
+    val taskDeleted: Int
+
+    when (match) {
+      TASK_WITH_ID -> {
+        val id = uri.pathSegments?.get(1)
+        taskDeleted = db.delete(
+          TaskContract.TaskEntry.TABLE_NAME,
+          "id=?",
+          arrayOf(id)
+        )
+      }
+
+      else -> throw UnsupportedOperationException("Unknown uri $uri")
+    }
+
+    if (taskDeleted != 0) {
+      context?.contentResolver?.notifyChange(uri, null)
+    }
+
+    return taskDeleted
   }
 
   override fun update(p0: Uri, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int {

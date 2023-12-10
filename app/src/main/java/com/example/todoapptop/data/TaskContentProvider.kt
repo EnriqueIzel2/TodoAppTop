@@ -1,10 +1,12 @@
 package com.example.todoapptop.data
 
 import android.content.ContentProvider
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
+import java.lang.UnsupportedOperationException
 
 class TaskContentProvider : ContentProvider() {
 
@@ -48,8 +50,26 @@ class TaskContentProvider : ContentProvider() {
     TODO("Not yet implemented")
   }
 
-  override fun insert(p0: Uri, p1: ContentValues?): Uri? {
-    TODO("Not yet implemented")
+  override fun insert(uri: Uri, values: ContentValues?): Uri? {
+    val db = taskDBHelper.writableDatabase
+    val match = sUriMatcher.match(uri)
+    val returnUri: Uri?
+
+    when(match) {
+      TASKS -> {
+        val id = db.insert(TaskContract.TaskEntry.TABLE_NAME, null, values)
+        if (id > 0) {
+          returnUri = ContentUris.withAppendedId(TaskContract.TaskEntry.CONTENT_URI, id)
+        } else {
+          throw android.database.SQLException("Failure to insert row $uri")
+        }
+      }
+      else -> throw UnsupportedOperationException("Unknown uri $uri")
+    }
+
+    context?.contentResolver?.notifyChange(uri, null)
+
+    return returnUri
   }
 
   override fun delete(p0: Uri, p1: String?, p2: Array<out String>?): Int {
